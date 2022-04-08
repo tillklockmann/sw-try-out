@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+        
+    shopware:
+      image: dockware/play:latest
+      container_name: shopware_test_it
+      ports:
+          - "22:22"     # ssh
+          - "80:80"     # apache2
+          - "3306:3306" # sql
+      volumes:
+          - "shopware_test_it_volume:/var/www/html"
+          - "db_test_it_volume:/var/lib/mysql"
+      networks:
+          - web
+      environment:
+          - XDEBUG_ENABLED=0    # as Xdebug will slow your enviromnet down, you should only enbale it if needed
+          - PHP_VERSION=8.0     # PHP version
+
+
+## ***********************************************************************
+##  PERSISTENT DOCKER VOLUMES
+## ***********************************************************************
+volumes:
+    db_test_it_volume:
+        driver: local
+    shopware_test_it_volume:
+        driver: local
+        
+networks:
+  web:
+    external: false
+
+
+
+
